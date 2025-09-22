@@ -116,7 +116,6 @@ class Tree {
     } else {
       const queues = [this.root];
       while (queues.length != 0) {
-        const deque = queues.shift();
         if (deque.left != null) {
           queues.push(deque.left);
         }
@@ -139,6 +138,74 @@ class Tree {
     this.preOrderforEach(callback, node.left);
     this.preOrderforEach(callback, node.right);
   }
+
+  inOrderforEach(callback, node = this.root) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+    if (!node) {
+      return;
+    }
+    this.preOrderforEach(callback, node.left);
+    callback(node);
+    this.preOrderforEach(callback, node.right);
+  }
+
+  postOrderforEach(callback, node = this.root) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+    if (!node) {
+      return;
+    }
+    this.preOrderforEach(callback, node.left);
+    this.preOrderforEach(callback, node.right);
+    callback(node);
+  }
+
+  height(value) {
+    if (this.root == null) {
+      return null;
+    }
+
+    const queues = [this.root];
+    let found = null;
+    while (queues.length != 0) {
+      const deque = queues.shift();
+      if (deque.data == value) {
+        found = deque;
+        break;
+      }
+      if (deque.left != null) {
+        queues.push(deque.left);
+      }
+      if (deque.right != null) {
+        queues.push(deque.right);
+      }
+    }
+
+    function getHeightIterative(node) {
+      if (node == null) return null;
+
+      let height = -1;
+      const queue = [node];
+
+      while (queue.length > 0) {
+        let levelSize = queue.length;
+
+        for (let i = 0; i < levelSize; i++) {
+          const current = queue.shift();
+          if (current.left) queue.push(current.left);
+          if (current.right) queue.push(current.right);
+        }
+
+        height++;
+      }
+
+      return height;
+    }
+    return getHeightIterative(found);
+  }
 }
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -156,5 +223,4 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 
 const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 console.log(prettyPrint(myTree.root));
-console.log(myTree.levelOrderForEach((node) => console.log(node.data)));
-console.log(myTree.preOrderforEach((node) => console.log(node.data)));
+console.log(myTree.height(1));
