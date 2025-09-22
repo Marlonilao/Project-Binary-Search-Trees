@@ -107,6 +107,38 @@ class Tree {
       return this.root.find(value);
     }
   }
+
+  levelOrderForEach(callback) {
+    if (callback == undefined) {
+      throw new Error("Callback is required");
+    } else if (this.root == null) {
+      return;
+    } else {
+      const queues = [this.root];
+      while (queues.length != 0) {
+        const deque = queues.shift();
+        if (deque.left != null) {
+          queues.push(deque.left);
+        }
+        if (deque.right != null) {
+          queues.push(deque.right);
+        }
+        callback(deque);
+      }
+    }
+  }
+
+  preOrderforEach(callback, node = this.root) {
+    if (!callback) {
+      throw new Error("Callback is required");
+    }
+    if (!node) {
+      return;
+    }
+    callback(node);
+    this.preOrderforEach(callback, node.left);
+    this.preOrderforEach(callback, node.right);
+  }
 }
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -122,12 +154,7 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const myTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-myTree.insert(10);
-myTree.insert(15);
-// console.log(prettyPrint(myTree.root));
-// myTree.delete(5);
-// console.log(prettyPrint(myTree.root));
-// myTree.delete(15);
-// console.log(prettyPrint(myTree.root));
-console.log(myTree.find(80));
+const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+console.log(prettyPrint(myTree.root));
+console.log(myTree.levelOrderForEach((node) => console.log(node.data)));
+console.log(myTree.preOrderforEach((node) => console.log(node.data)));
