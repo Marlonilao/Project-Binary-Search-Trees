@@ -206,6 +206,31 @@ class Tree {
     }
     return getHeightIterative(found);
   }
+
+  depth(value) {
+    if (this.root == null) return null;
+
+    const queues = [this.root];
+    let found = false;
+    let depth = -1;
+    while (queues.length != 0) {
+      let levelSize = queues.length;
+
+      for (let i = 0; i < levelSize; i++) {
+        const current = queues.shift();
+        if (current.data == value) {
+          found = true;
+          break;
+        }
+        if (current.left) queues.push(current.left);
+        if (current.right) queues.push(current.right);
+      }
+      depth++;
+
+      if (found) return depth;
+    }
+    return null;
+  }
 }
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -223,4 +248,4 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 
 const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 console.log(prettyPrint(myTree.root));
-console.log(myTree.height(1));
+console.log(myTree.depth(9));
