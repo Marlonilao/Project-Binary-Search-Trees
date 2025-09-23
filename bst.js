@@ -163,6 +163,27 @@ class Tree {
     callback(node);
   }
 
+  #getHeightIterative(node) {
+    if (node == null) return null;
+
+    let height = -1;
+    const queues = [node];
+
+    while (queues.length > 0) {
+      let levelSize = queues.length;
+
+      for (let i = 0; i < levelSize; i++) {
+        const current = queues.shift();
+        if (current.left) queues.push(current.left);
+        if (current.right) queues.push(current.right);
+      }
+
+      height++;
+    }
+
+    return height;
+  }
+
   height(value) {
     if (this.root == null) {
       return null;
@@ -184,27 +205,7 @@ class Tree {
       }
     }
 
-    function getHeightIterative(node) {
-      if (node == null) return null;
-
-      let height = -1;
-      const queue = [node];
-
-      while (queue.length > 0) {
-        let levelSize = queue.length;
-
-        for (let i = 0; i < levelSize; i++) {
-          const current = queue.shift();
-          if (current.left) queue.push(current.left);
-          if (current.right) queue.push(current.right);
-        }
-
-        height++;
-      }
-
-      return height;
-    }
-    return getHeightIterative(found);
+    return this.#getHeightIterative(found);
   }
 
   depth(value) {
@@ -232,7 +233,21 @@ class Tree {
     return null;
   }
 
-  isBalanced() {}
+  isBalanced() {
+    if (this.root == null) return null;
+    const queues = [this.root];
+    while (queues.length != 0) {
+      let current = queues.shift();
+      let leftHeight = this.#getHeightIterative(current.left);
+      let rightHeight = this.#getHeightIterative(current.right);
+      if (Math.abs(leftHeight - rightHeight) > 1) {
+        return false;
+      }
+      if (current.left) queues.push(current.left);
+      if (current.right) queues.push(current.right);
+    }
+    return true;
+  }
 }
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -250,4 +265,4 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 
 const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 console.log(prettyPrint(myTree.root));
-console.log(myTree.depth(9));
+console.log(myTree.isBalanced());
