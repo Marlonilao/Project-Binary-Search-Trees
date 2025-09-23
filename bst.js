@@ -146,9 +146,9 @@ class Tree {
     if (!node) {
       return;
     }
-    this.preOrderforEach(callback, node.left);
+    this.inOrderforEach(callback, node.left);
     callback(node);
-    this.preOrderforEach(callback, node.right);
+    this.inOrderforEach(callback, node.right);
   }
 
   postOrderforEach(callback, node = this.root) {
@@ -158,8 +158,8 @@ class Tree {
     if (!node) {
       return;
     }
-    this.preOrderforEach(callback, node.left);
-    this.preOrderforEach(callback, node.right);
+    this.postOrderforEach(callback, node.left);
+    this.postOrderforEach(callback, node.right);
     callback(node);
   }
 
@@ -231,6 +231,8 @@ class Tree {
     }
     return null;
   }
+
+  isBalanced() {}
 }
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
