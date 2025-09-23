@@ -164,7 +164,7 @@ class Tree {
   }
 
   #getHeightIterative(node) {
-    if (node == null) return null;
+    if (node == null) return -1;
 
     let height = -1;
     const queues = [node];
@@ -248,6 +248,32 @@ class Tree {
     }
     return true;
   }
+
+  // this is for debugging purpose, i want to see which nodes are unbalanced and why.
+  // isBalanced() {
+  //   if (this.root == null) return null;
+  //   const queues = [this.root];
+  //   const unbalanced = [];
+
+  //   while (queues.length != 0) {
+  //     let current = queues.shift();
+  //     let leftHeight = this.#getHeightIterative(current.left);
+  //     let rightHeight = this.#getHeightIterative(current.right);
+  //     let diff = Math.abs(leftHeight - rightHeight);
+
+  //     if (diff > 1) {
+  //       unbalanced.push({
+  //         node: current.data,
+  //         difference: diff,
+  //       });
+  //     }
+
+  //     if (current.left) queues.push(current.left);
+  //     if (current.right) queues.push(current.right);
+  //   }
+
+  //   return unbalanced.length > 0 ? unbalanced : true;
+  // }
 }
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -264,5 +290,8 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+myTree.insert(22);
+myTree.insert(-30);
+myTree.insert(-31);
 console.log(prettyPrint(myTree.root));
 console.log(myTree.isBalanced());
