@@ -115,7 +115,9 @@ class Tree {
       return;
     } else {
       const queues = [this.root];
-      while (queues.length != 0) {
+      let i = 0;
+      while (i < queues.length) {
+        let deque = queues[i++];
         if (deque.left != null) {
           queues.push(deque.left);
         }
@@ -233,49 +235,6 @@ class Tree {
     return null;
   }
 
-  // isBalanced() {
-  //   if (this.root == null) return null;
-  //   const queues = [this.root];
-  //   while (queues.length != 0) {
-  //     let current = queues.shift();
-  //     let leftHeight = this.#getHeightIterative(current.left);
-  //     let rightHeight = this.#getHeightIterative(current.right);
-  //     if (Math.abs(leftHeight - rightHeight) > 1) {
-  //       return false;
-  //     }
-  //     if (current.left) queues.push(current.left);
-  //     if (current.right) queues.push(current.right);
-  //   }
-  //   return true;
-  // }
-
-  // this is for debugging purpose, i want to see which nodes are unbalanced and why.
-  // isBalanced() {
-  //   if (this.root == null) return null;
-  //   const queues = [this.root];
-  //   const unbalanced = [];
-
-  //   while (queues.length != 0) {
-  //     let current = queues.shift();
-  //     let leftHeight = this.#getHeightIterative(current.left);
-  //     let rightHeight = this.#getHeightIterative(current.right);
-  //     let diff = Math.abs(leftHeight - rightHeight);
-
-  //     if (diff > 1) {
-  //       unbalanced.push({
-  //         node: current.data,
-  //         difference: diff,
-  //       });
-  //     }
-
-  //     if (current.left) queues.push(current.left);
-  //     if (current.right) queues.push(current.right);
-  //   }
-
-  //   return unbalanced.length > 0 ? unbalanced : true;
-  // }
-
-  //refactor to recursive method to improve time complexity
   isBalance() {
     if (this.root == null) return null;
     let balance = true;
@@ -302,9 +261,10 @@ class Tree {
 
     const arrayOfUnbalancedTree = [];
     const queues = [this.root];
+    let i = 0;
 
-    while (queues.length != 0) {
-      const deque = queues.shift();
+    while (i < queues.length) {
+      const deque = queues[i++];
       if (deque.left) queues.push(deque.left);
       if (deque.right) queues.push(deque.right);
       arrayOfUnbalancedTree.push(deque.data);
@@ -314,7 +274,7 @@ class Tree {
   }
 }
 
-prettyPrint = (node, prefix = "", isLeft = true) => {
+const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
   }
@@ -327,12 +287,4 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const myTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-myTree.insert(22);
-myTree.insert(-30);
-myTree.insert(-31);
-console.log(prettyPrint(myTree.root));
-console.log(myTree.isBalance());
-myTree.reBalance();
-console.log(prettyPrint(myTree.root));
-console.log(myTree.isBalance());
+export { Tree, prettyPrint };
